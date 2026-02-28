@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agencia Digital — App</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ee;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: #e2ddd5;
+  --ink: #1a1714;
+  --ink2: #6b6560;
+  --ink3: #a09a94;
+  --accent: #c84b2f;
+  --accent2: #2f6bc8;
+  --accent3: #2ea87e;
+  --accent4: #e8a020;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Bricolage Grotesque', sans-serif;
+  --radius: 12px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 220px;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-logo .brand {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.sidebar-logo .sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 2px;
+}
+
+.nav { padding: 12px 0; flex: 1; }
+
+.nav-section {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 12px 20px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.04); }
+.nav-item.active { color: #fff; background: rgba(255,255,255,0.08); border-left-color: var(--accent); }
+
+.nav-item .icon { font-size: 15px; width: 18px; text-align: center; }
+
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-family: var(--mono);
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent4));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+
+.user-info .name { font-size: 12px; color: #fff; font-weight: 600; }
+.user-info .role { font-size: 10px; color: rgba(255,255,255,0.35); font-family: var(--mono); }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.topbar h1 {
+  font-size: 17px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.topbar-actions { display: flex; gap: 8px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover { background: #2a2520; }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface2); }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── DASHBOARD ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.10s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.20s; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 6px;
+  font-family: var(--mono);
+}
+
+.stat-accent { color: var(--accent3); }
+.stat-warn { color: var(--accent4); }
+.stat-danger { color: var(--accent); }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title { font-size: 13px; font-weight: 700; }
+.card-action { font-size: 11px; color: var(--accent2); cursor: pointer; font-weight: 600; }
+
+.project-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--surface2);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.project-row:last-child { border-bottom: none; }
+.project-row:hover { background: var(--surface2); }
+
+.project-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.project-info { flex: 1; min-width: 0; }
+.project-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.project-client { font-size: 11px; color: var(--ink3); font-family: var(--mono); }
+
+.progress-wrap { width: 80px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+.progress-label { font-size: 10px; color: var(--ink3); font-family: var(--mono); text-align: right; margin-top: 3px; }
+
+.chip {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.chip-green { background: #dcfce7; color: #16a34a; }
+.chip-yellow { background: #fef9c3; color: #a16207; }
+.chip-red { background: #fee2e2; color: #dc2626; }
+.chip-blue { background: #dbeafe; color: #1d4ed8; }
+.chip-gray { background: var(--surface2); color: var(--ink2); }
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--surface2);
+  font-size: 12px;
+}
+.task-row:last-child { border-bottom: none; }
+
+.task-check {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.task-check:hover { border-color: var(--accent3); }
+.task-check.done { background: var(--accent3); border-color: var(--accent3); }
+.task-check.done::after { content: '✓'; color: #fff; font-size: 9px; font-weight: 700; }
+
+.task-title { flex: 1; }
+.task-title.done-text { text-decoration: line-through; color: var(--ink3); }
+.task-project { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+
+/* ── TABLE ── */
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+
+table { width: 100%; border-collapse: collapse; }
+th {
+  padding: 11px 16px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--surface2);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+
+.td-name { font-weight: 600; }
+.td-mono { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+.td-amount { font-family: var(--mono); font-weight: 600; }
+
+/* ── TEAM CARDS ── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  animation: fadeUp 0.4s ease both;
+}
+
+.team-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; color: #fff;
+  margin: 0 auto 12px;
+}
+
+.team-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.team-role { font-size: 11px; font-family: var(--mono); color: var(--ink3); margin-bottom: 10px; }
+.team-specialty { font-size: 11px; color: var(--ink2); margin-bottom: 12px; }
+
+.team-stat { display: flex; justify-content: center; gap: 16px; }
+.team-stat-item { text-align: center; }
+.team-stat-item .v { font-size: 16px; font-weight: 800; }
+.team-stat-item .l { font-size: 9px; font-family: var(--mono); color: var(--ink3); text-transform: uppercase; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.section-title { font-size: 14px; font-weight: 700; }
+
+/* ── EMPTY ── */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--ink3);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+/* ── SCROLLBAR ── */
+.content::-webkit-scrollbar { width: 4px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* Notification dot */
+.topbar-notif {
+  position: relative;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+}
+.notif-dot {
+  position: absolute;
+  top: 5px; right: 5px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1px solid var(--surface);
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Agencia Digital<br>& Sistemas</div>
+    <div class="sub">// panel interno v1.0</div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="showView('dashboard')">
+      <span class="icon">◈</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showView('proyectos')">
+      <span class="icon">▤</span> Proyectos
+      <span class="badge">4</span>
+    </div>
+    <div class="nav-item" onclick="showView('tareas')">
+      <span class="icon">✦</span> Tareas
+      <span class="badge">3</span>
+    </div>
+
+    <div class="nav-section">Negocio</div>
+    <div class="nav-item" onclick="showView('clientes')">
+      <span class="icon">◉</span> Clientes
+    </div>
+    <div class="nav-item" onclick="showView('pagos')">
+      <span class="icon">◈</span> Pagos
+    </div>
+    <div class="nav-item" onclick="showView('equipo')">
+      <span class="icon">◎</span> Equipo
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="avatar">FM</div>
+      <div class="user-info">
+        <div class="name">Fernanda Ríos</div>
+        <div class="role">project_manager</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <h1 id="page-title">Dashboard</h1>
+    <div style="flex:1"></div>
+    <div class="topbar-actions">
+      <div class="topbar-notif">🔔<div class="notif-dot"></div></div>
+      <button class="btn btn-primary" id="topbar-cta">+ Nuevo proyecto</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Clientes activos</div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub stat-accent">↑ 1 este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Proyectos en curso</div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub stat-warn">2 con entrega próxima</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Por cobrar</div>
+          <div class="stat-value" style="font-size:24px">$133,500</div>
+          <div class="stat-sub stat-danger">2 pagos pendientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Cobrado este mes</div>
+          <div class="stat-value" style="font-size:24px">$90,500</div>
+          <div class="stat-sub stat-accent">↑ vs mes anterior</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Proyectos activos</span>
+            <span class="card-action" onclick="showView('proyectos')">Ver todos →</span>
+          </div>
+          <div class="project-row">
+            <div class="project-dot" style="background:#2f6bc8"></div>
+            <div class="project-info">
+              <div class="project-name">Rediseño Web Corporativo</div>
+              <div class="project-client">TechSolutions SA</div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:55%;background:#2f6bc8"></div></div>
+              <div class="progress-label">55%</div>
+            </div>
+            <span class="chip chip-blue">en progreso</span>
+          </div>
+          <div class="project-row">
+            <div class="project-dot" style="background:#2ea87e"></div>
+            <div class="project-info">
+              <div class="project-name">Tienda Online La Paloma</div>
+              <div class="project-client">La Paloma Eventos</div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:30%;background:#2ea87e"></div></div>
+              <div class="progress-label">30%</div>
+            </div>
+            <span class="chip chip-blue">en progreso</span>
+          </div>
+          <div class="project-row">
+            <div class="project-dot" style="background:#e8a020"></div>
+            <div class="project-info">
+              <div class="project-name">Branding Personal</div>
+              <div class="project-client">Jorge Ibarra</div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:85%;background:#e8a020"></div></div>
+              <div class="progress-label">85%</div>
+            </div>
+            <span class="chip chip-yellow">revisión</span>
+          </div>
+          <div class="project-row">
+            <div class="project-dot" style="background:#c84b2f"></div>
+            <div class="project-info">
+              <div class="project-name">Portal Distribuidores</div>
+              <div class="project-client">Distribuidora Noroeste</div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:15%;background:#c84b2f"></div></div>
+              <div class="progress-label">15%</div>
+            </div>
+            <span class="chip chip-blue">en progreso</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Tareas pendientes</span>
+            <span class="card-action" onclick="showView('tareas')">Ver todas →</span>
+          </div>
+          <div class="task-row">
+            <div class="task-check" onclick="toggleTask(this)"></div>
+            <div class="task-info" style="flex:1">
+              <div class="task-title">Desarrollo frontend en React</div>
+              <div class="task-project">Rediseño Web · Miguel Soto</div>
+            </div>
+            <span class="chip chip-red">urgente</span>
+          </div>
+          <div class="task-row">
+            <div class="task-check" onclick="toggleTask(this)"></div>
+            <div class="task-info" style="flex:1">
+              <div class="task-title">Catálogo de productos y carrito</div>
+              <div class="task-project">La Paloma · Miguel Soto</div>
+            </div>
+            <span class="chip chip-red">urgente</span>
+          </div>
+          <div class="task-row">
+            <div class="task-check" onclick="toggleTask(this)"></div>
+            <div class="task-info" style="flex:1">
+              <div class="task-title">Diseño de logo y manual de marca</div>
+              <div class="task-project">Branding · Ana Torres</div>
+            </div>
+            <span class="chip chip-yellow">alta</span>
+          </div>
+          <div class="task-row">
+            <div class="task-check done" onclick="toggleTask(this)"></div>
+            <div class="task-info" style="flex:1">
+              <div class="task-title done-text">Wireframes y prototipo navegable</div>
+              <div class="task-project">Rediseño Web · Ana Torres</div>
+            </div>
+            <span class="chip chip-gray">completada</span>
+          </div>
+          <div class="task-row">
+            <div class="task-check" onclick="toggleTask(this)"></div>
+            <div class="task-info" style="flex:1">
+              <div class="task-title">Integración CMS Headless</div>
+              <div class="task-project">Rediseño Web · Miguel Soto</div>
+            </div>
+            <span class="chip chip-blue">media</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROYECTOS -->
+    <div class="view" id="view-proyectos">
+      <div class="section-header">
+        <span class="section-title">Todos los proyectos</span>
+        <button class="btn btn-primary">+ Nuevo proyecto</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+              <th>Presupuesto</th>
+              <th>Entrega</th>
+              <th>Avance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">Rediseño Web Corporativo</td>
+              <td class="td-mono">TechSolutions SA</td>
+              <td><span class="chip chip-blue">sitio_web</span></td>
+              <td><span class="chip chip-blue">en progreso</span></td>
+              <td class="td-mono td-amount">$85,000</td>
+              <td class="td-mono">31 Mar 2026</td>
+              <td>
+                <div class="progress-bar" style="width:100px">
+                  <div class="progress-fill" style="width:55%;background:#2f6bc8"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="td-name">Tienda Online La Paloma</td>
+              <td class="td-mono">La Paloma Eventos</td>
+              <td><span class="chip chip-green">ecommerce</span></td>
+              <td><span class="chip chip-blue">en progreso</span></td>
+              <td class="td-mono td-amount">$120,000</td>
+              <td class="td-mono">30 Abr 2026</td>
+              <td>
+                <div class="progress-bar" style="width:100px">
+                  <div class="progress-fill" style="width:30%;background:#2ea87e"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="td-name">Branding Personal</td>
+              <td class="td-mono">Jorge Ibarra</td>
+              <td><span class="chip chip-yellow">branding</span></td>
+              <td><span class="chip chip-yellow">revisión</span></td>
+              <td class="td-mono td-amount">$28,000</td>
+              <td class="td-mono">28 Feb 2026</td>
+              <td>
+                <div class="progress-bar" style="width:100px">
+                  <div class="progress-fill" style="width:85%;background:#e8a020"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="td-name">Portal Distribuidores</td>
+              <td class="td-mono">Distrinoroeste SA</td>
+              <td><span class="chip chip-blue">sitio_web</span></td>
+              <td><span class="chip chip-blue">en progreso</span></td>
+              <td class="td-mono td-amount">$195,000</td>
+              <td class="td-mono">30 Jun 2026</td>
+              <td>
+                <div class="progress-bar" style="width:100px">
+                  <div class="progress-fill" style="width:15%;background:#c84b2f"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAREAS -->
+    <div class="view" id="view-tareas">
+      <div class="section-header">
+        <span class="section-title">Tablero de tareas</span>
+        <button class="btn btn-primary">+ Nueva tarea</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <!-- Pendiente -->
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--ink3);display:inline-block"></span>pendiente
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px">Integración CMS Headless</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--ink3);margin-bottom:8px">Rediseño Web Corporativo</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="chip chip-blue">media</span>
+                <span style="font-size:10px;font-family:var(--mono);color:var(--ink3)">25 Mar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- En progreso -->
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent2);display:inline-block"></span>en progreso
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--accent2)">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px">Desarrollo frontend en React</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--ink3);margin-bottom:8px">Rediseño Web Corporativo</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="chip chip-red">urgente</span>
+                <span style="font-size:10px;font-family:var(--mono);color:var(--ink3)">10 Mar</span>
+              </div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--accent2)">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px">Catálogo de productos y carrito</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--ink3);margin-bottom:8px">Tienda Online La Paloma</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="chip chip-red">urgente</span>
+                <span style="font-size:10px;font-family:var(--mono);color:var(--ink3)">15 Mar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Revisión -->
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent4);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent4);display:inline-block"></span>revisión
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;border-left:3px solid var(--accent4)">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px">Diseño de logo y manual de marca</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--ink3);margin-bottom:8px">Branding Personal</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="chip chip-yellow">alta</span>
+                <span style="font-size:10px;font-family:var(--mono);color:var(--ink3)">20 Feb</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Completada -->
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent3);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent3);display:inline-block"></span>completada
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;opacity:.6">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px;text-decoration:line-through">Wireframes y prototipo</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--ink3);margin-bottom:8px">Rediseño Web Corporativo</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="chip chip-green">completada</span>
+                <span style="font-size:10px;font-family:var(--mono);color:var(--ink3)">25 Ene</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div class="view" id="view-clientes">
+      <div class="section-header">
+        <span class="section-title">Clientes</span>
+        <button class="btn btn-primary">+ Nuevo cliente</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Empresa</th>
+              <th>RFC</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+              <th>Proyectos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">Carlos Mendoza</td>
+              <td class="td-mono">carlos@techsolutions.mx</td>
+              <td>TechSolutions SA</td>
+              <td class="td-mono">MECC850101AB1</td>
+              <td><span class="chip chip-blue">empresa</span></td>
+              <td><span class="chip chip-green">activo</span></td>
+              <td class="td-mono" style="text-align:center">1</td>
+            </tr>
+            <tr>
+              <td class="td-name">Sofía Ramírez</td>
+              <td class="td-mono">sofia@lapaloma.com</td>
+              <td>La Paloma Eventos</td>
+              <td class="td-mono">RASF900215CD2</td>
+              <td><span class="chip chip-blue">empresa</span></td>
+              <td><span class="chip chip-green">activo</span></td>
+              <td class="td-mono" style="text-align:center">1</td>
+            </tr>
+            <tr>
+              <td class="td-name">Jorge Ibarra</td>
+              <td class="td-mono">jorge.ibarra@gmail.com</td>
+              <td>—</td>
+              <td class="td-mono">IABJ780930EF3</td>
+              <td><span class="chip chip-gray">persona</span></td>
+              <td><span class="chip chip-green">activo</span></td>
+              <td class="td-mono" style="text-align:center">1</td>
+            </tr>
+            <tr>
+              <td class="td-name">Distribuidora Noroeste</td>
+              <td class="td-mono">contacto@distrinoroeste.mx</td>
+              <td>Distrinoroeste SA de CV</td>
+              <td class="td-mono">DINO950601GH4</td>
+              <td><span class="chip chip-blue">empresa</span></td>
+              <td><span class="chip chip-green">activo</span></td>
+              <td class="td-mono" style="text-align:center">1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGOS -->
+    <div class="view" id="view-pagos">
+      <div class="section-header">
+        <span class="section-title">Pagos y facturación</span>
+        <button class="btn btn-primary">+ Registrar pago</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        <div class="stat-card">
+          <div class="stat-label">Total cobrado</div>
+          <div class="stat-value" style="font-size:26px;color:var(--accent3)">$90,500</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Por cobrar</div>
+          <div class="stat-value" style="font-size:26px;color:var(--accent4)">$133,500</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total facturado</div>
+          <div class="stat-value" style="font-size:26px">$224,000</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th>Cliente</th>
+              <th>Proyecto</th>
+              <th>Monto</th>
+              <th>Método</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">Anticipo 50% — Rediseño Web</td>
+              <td class="td-mono">TechSolutions</td>
+              <td class="td-mono">Rediseño Web</td>
+              <td class="td-mono td-amount">$42,500</td>
+              <td><span class="chip chip-gray">transferencia</span></td>
+              <td><span class="chip chip-green">pagado</span></td>
+              <td class="td-mono">12 Ene 2026</td>
+            </tr>
+            <tr>
+              <td class="td-name">Saldo 50% — Rediseño Web</td>
+              <td class="td-mono">TechSolutions</td>
+              <td class="td-mono">Rediseño Web</td>
+              <td class="td-mono td-amount">$42,500</td>
+              <td><span class="chip chip-gray">transferencia</span></td>
+              <td><span class="chip chip-yellow">pendiente</span></td>
+              <td class="td-mono">—</td>
+            </tr>
+            <tr>
+              <td class="td-name">Anticipo 40% — Tienda Online</td>
+              <td class="td-mono">La Paloma</td>
+              <td class="td-mono">Tienda Online</td>
+              <td class="td-mono td-amount">$48,000</td>
+              <td><span class="chip chip-gray">tarjeta</span></td>
+              <td><span class="chip chip-green">pagado</span></td>
+              <td class="td-mono">3 Feb 2026</td>
+            </tr>
+            <tr>
+              <td class="td-name">Saldo 60% — Tienda Online</td>
+              <td class="td-mono">La Paloma</td>
+              <td class="td-mono">Tienda Online</td>
+              <td class="td-mono td-amount">$72,000</td>
+              <td><span class="chip chip-gray">tarjeta</span></td>
+              <td><span class="chip chip-yellow">pendiente</span></td>
+              <td class="td-mono">—</td>
+            </tr>
+            <tr>
+              <td class="td-name">Branding Personal — Completo</td>
+              <td class="td-mono">Jorge Ibarra</td>
+              <td class="td-mono">Branding</td>
+              <td class="td-mono td-amount">$28,000</td>
+              <td><span class="chip chip-gray">efectivo</span></td>
+              <td><span class="chip chip-yellow">pendiente</span></td>
+              <td class="td-mono">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EQUIPO -->
+    <div class="view" id="view-equipo">
+      <div class="section-header">
+        <span class="section-title">Equipo</span>
+        <button class="btn btn-primary">+ Agregar empleado</button>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#c84b2f,#e8a020)">AL</div>
+          <div class="team-name">Ana Lucía Torres</div>
+          <div class="team-role">diseñadora</div>
+          <div class="team-specialty">UI/UX · Branding</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent3);margin-bottom:12px">$450/hr</div>
+          <div class="team-stat">
+            <div class="team-stat-item"><div class="v">3</div><div class="l">proyectos</div></div>
+            <div class="team-stat-item"><div class="v">180h</div><div class="l">asignadas</div></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#2f6bc8,#2ea87e)">MS</div>
+          <div class="team-name">Miguel Ángel Soto</div>
+          <div class="team-role">desarrollador</div>
+          <div class="team-specialty">React · Node.js</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent3);margin-bottom:12px">$550/hr</div>
+          <div class="team-stat">
+            <div class="team-stat-item"><div class="v">2</div><div class="l">proyectos</div></div>
+            <div class="team-stat-item"><div class="v">320h</div><div class="l">asignadas</div></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7c3aed,#c84b2f)">FR</div>
+          <div class="team-name">Fernanda Ríos</div>
+          <div class="team-role">project_manager</div>
+          <div class="team-specialty">Scrum · Gestión ágil</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent3);margin-bottom:12px">$400/hr</div>
+          <div class="team-stat">
+            <div class="team-stat-item"><div class="v">1</div><div class="l">proyectos</div></div>
+            <div class="team-stat-item"><div class="v">40h</div><div class="l">asignadas</div></div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#2ea87e,#2f6bc8)">LC</div>
+          <div class="team-name">Luis Castillo</div>
+          <div class="team-role">desarrollador</div>
+          <div class="team-specialty">WordPress · PHP</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--accent3);margin-bottom:12px">$380/hr</div>
+          <div class="team-stat">
+            <div class="team-stat-item"><div class="v">0</div><div class="l">proyectos</div></div>
+            <div class="team-stat-item"><div class="v">0h</div><div class="l">asignadas</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<script>
+const titles = {
+  dashboard: 'Dashboard',
+  proyectos: 'Proyectos',
+  tareas: 'Tareas',
+  clientes: 'Clientes',
+  pagos: 'Pagos',
+  equipo: 'Equipo'
+}
+
+const ctas = {
+  dashboard: '+ Nuevo proyecto',
+  proyectos: '+ Nuevo proyecto',
+  tareas: '+ Nueva tarea',
+  clientes: '+ Nuevo cliente',
+  pagos: '+ Registrar pago',
+  equipo: '+ Agregar empleado'
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
+  document.getElementById('view-' + id).classList.add('active')
+  document.getElementById('page-title').textContent = titles[id]
+  document.getElementById('topbar-cta').textContent = ctas[id]
+  event.currentTarget.classList.add('active')
+}
+
+function toggleTask(el) {
+  el.classList.toggle('done')
+  const title = el.nextElementSibling.querySelector('.task-title')
+  title.classList.toggle('done-text')
+}
+</script>
+</body>
+</html>
